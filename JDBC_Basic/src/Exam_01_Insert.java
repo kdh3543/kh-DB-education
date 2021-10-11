@@ -1,6 +1,7 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.Scanner;
 
 public class Exam_01_Insert {
 	public static void main(String[] args) {
@@ -10,8 +11,7 @@ public class Exam_01_Insert {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 		}catch(Exception e) {
-			System.out.println("OJDBC 드라이버를 발견하지 못함.");
-			System.exit(0);
+			
 		}
 
 
@@ -22,6 +22,13 @@ public class Exam_01_Insert {
 		String username = "kh";
 		String password = "kh";
 
+		Scanner sc = new Scanner(System.in);
+		System.out.print("신규 메뉴 이름: ");
+		String name = sc.nextLine();
+		
+		System.out.print("신규 메뉴 가격: ");
+		int price = Integer.parseInt(sc.nextLine());
+		
 		try {
 			Connection con = DriverManager.getConnection(url, username, password);
 			
@@ -29,8 +36,8 @@ public class Exam_01_Insert {
 			Statement stat = con.createStatement();
 			//4. 실행할 Query문 작성 및 Query 실행
 			String sql = "insert into cafe_menu values(cafe_menu_seq.nextval,"
-					+ "'Cafe Mocha', 2500)";
-				;
+					+ "'"+name+"',"+price+")";
+			
 			int result = stat.executeUpdate(sql);
 			
 			System.out.println("결과 : " + result);
