@@ -1,13 +1,13 @@
-package classes;
+package dto;
 
-public class Menu {
+public class MenuDTO {
 	private int id;
 	private String name;
 	private int price;
 	
-	public Menu() {}
+	public MenuDTO() {}
 	
-	public Menu(int id, String name, int price) {
+	public MenuDTO(int id, String name, int price) {
 		super();
 		this.id = id;
 		this.name = name;

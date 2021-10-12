@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import classes.Menu;
 import dao.CafeMenuDAO;
+import dto.MenuDTO;
 
 public class Quiz_01 {
 	public static void main(String[] args) {
@@ -35,17 +35,17 @@ public class Quiz_01 {
 					
 				}
 				else if(menu.equals("2")) {
-					ArrayList<Menu> list = dao.selectAll();
+					ArrayList<MenuDTO> list = dao.selectAll();
 					
-					for(Menu m : list) {
+					for(MenuDTO m : list) {
 						System.out.println(m.getId() + " : " + m.getName()
 						 + " : " + m.getPrice()); 
 					}
 					
 				}else if(menu.equals("3")) {
-					ArrayList<Menu> list = dao.selectAll();
+					ArrayList<MenuDTO> list = dao.selectAll();
 					
-					for(Menu m : list) {
+					for(MenuDTO m : list) {
 						System.out.println(m.getId() + " : " + m.getName()
 						 + " : " + m.getPrice()); 
 					}
@@ -58,15 +58,15 @@ public class Quiz_01 {
 					System.out.print("새 가격을 말씀해주세요: ");
 					int price = Integer.parseInt(sc.nextLine());
 					
-					int result = dao.update(name, price, id);
+					int result = dao.update(new MenuDTO(id,name,price));
 					if(result > 0 ) {
 						System.out.println("변경 성공");
 					}
 				
 				}else if(menu.equals("4")) {
-					ArrayList<Menu> list = dao.selectAll();
+					ArrayList<MenuDTO> list = dao.selectAll();
 					
-					for(Menu m : list) {
+					for(MenuDTO m : list) {
 						System.out.println(m.getId() + " : " + m.getName()
 						 + " : " + m.getPrice()); 
 					}
