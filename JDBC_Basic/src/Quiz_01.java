@@ -1,4 +1,7 @@
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 import dao.CafeMenuDAO;
@@ -25,57 +28,64 @@ public class Quiz_01 {
 					String name = sc.nextLine();
 					System.out.print("가격: ");
 					int price = Integer.parseInt(sc.nextLine());
-					
+
 					int result = dao.insert(name, price);
-					
+
 					if(result>0) {
 						System.out.println("입력 완료");
 					}else
 						System.out.println("잘못 입력했습니다.");
-					
+
 				}
 				else if(menu.equals("2")) {
 					ArrayList<MenuDTO> list = dao.selectAll();
-					
+
 					for(MenuDTO m : list) {
 						System.out.println(m.getId() + " : " + m.getName()
-						 + " : " + m.getPrice()); 
+						+ " : " + m.getPrice() + " : " + m.getDateString()); 
 					}
-					
+
 				}else if(menu.equals("3")) {
 					ArrayList<MenuDTO> list = dao.selectAll();
-					
+
 					for(MenuDTO m : list) {
 						System.out.println(m.getId() + " : " + m.getName()
-						 + " : " + m.getPrice()); 
+						+ " : " + m.getPrice() + " : " + m.getDateString()); 
 					}
-					
+
 					System.out.print("수정할 id를 입력해주세요: ");
 					int id = Integer.parseInt(sc.nextLine());
-					
+
 					System.out.print("새 메뉴명을 말씀해주세요: ");
 					String name = sc.nextLine();
 					System.out.print("새 가격을 말씀해주세요: ");
 					int price = Integer.parseInt(sc.nextLine());
+					System.out.print("메뉴의 새 등록일 (yyyy/MM/dd): ");
+					String reg_date = sc.nextLine();
 					
-					int result = dao.update(new MenuDTO(id,name,price));
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+					Date utilDate = sdf.parse(reg_date);
+					
+					java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+					
+					int result = dao.update(new MenuDTO(id,name,price,sqlDate));
 					if(result > 0 ) {
 						System.out.println("변경 성공");
 					}
-				
+
 				}else if(menu.equals("4")) {
 					ArrayList<MenuDTO> list = dao.selectAll();
-					
+
 					for(MenuDTO m : list) {
 						System.out.println(m.getId() + " : " + m.getName()
-						 + " : " + m.getPrice()); 
+						+ " : " + m.getPrice() + " : " + m.getDateString()); 
 					}
-					
+
 					System.out.print("삭제할 id를 입력해주세요: ");
 					int id = Integer.parseInt(sc.nextLine());
-					
+
 					int result = dao.delete(id);
-					
+
 					if(result>0) {
 						System.out.println("삭제 완료");
 					}

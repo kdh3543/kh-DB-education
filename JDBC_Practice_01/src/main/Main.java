@@ -1,6 +1,8 @@
 package main;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.sql.Date;
 import java.util.Scanner;
 
 import dao.MessageDAO;
@@ -30,8 +32,13 @@ public class Main {
 
 					System.out.print("남기실 메세지를 말씀해주세요: ");
 					String message = sc.nextLine();
-
-					int result = dao.insert(writer, message);
+					
+					System.out.print("방문 날짜 (yyyy/MM/dd) : ");
+					Date input = DateUtils.StringToSQLDate(sc.nextLine(),"yyyy/MM/dd");
+					
+					MessageDTO dto = new MessageDTO(0,writer,message,input);
+					
+					int result = dao.insert(dto);
 					if(result > 0) {
 						System.out.println("입력 완료");
 					}else {
@@ -41,14 +48,14 @@ public class Main {
 					ArrayList<MessageDTO> dto = dao.select();
 					for(MessageDTO m:dto) {
 						System.out.println(m.getSeq()+" : "+m.getWriter()+" : "
-								+m.getMessage());
+								+m.getMessage() + " : " + m.getStringDate());
 					}					
 				}else if(key.equals("3")) {
 					ArrayList<MessageDTO> dto = dao.select();
 					for(MessageDTO m:dto) {
 						System.out.println(m.getSeq()+" : "+m.getWriter()+" : "
-								+m.getMessage());
-					}					
+								+m.getMessage() + " : " + m.getStringDate());
+					}				
 					System.out.print("삭제하실 seq를 입력해주세요: ");
 					int seq = Integer.parseInt(sc.nextLine());
 					
@@ -62,7 +69,7 @@ public class Main {
 					ArrayList<MessageDTO> dto = dao.select();
 					for(MessageDTO m:dto) {
 						System.out.println(m.getSeq()+" : "+m.getWriter()+" : "
-								+m.getMessage());
+								+m.getMessage() + " : " + m.getStringDate());
 					}
 					System.out.print("수정하실 seq를 입력해주세요: ");
 					int seq = Integer.parseInt(sc.nextLine());
@@ -71,7 +78,12 @@ public class Main {
 					System.out.print("새 메세지를 적어주세요: ");
 					String message = sc.nextLine();
 					
-					int result = dao.update(writer, message, seq);
+					System.out.print("수정 날짜 (yyyy/MM/dd) : ");
+					Date input = DateUtils.StringToSQLDate(sc.nextLine(),"yyyy/MM/dd");
+					
+					MessageDTO dto2 = new MessageDTO(seq, message, writer, input);
+					
+					int result = dao.update(dto2);
 					if(result>0) {
 						System.out.println("수정 완료");
 					}else {
@@ -91,8 +103,7 @@ public class Main {
 									" : "+dto.getMessage());
 						}else {
 							System.out.println("해당 seq를 찾을 수 없습니다.");
-						}
-											
+						}											
 					}else if(search.equals("writer")) {
 						System.out.print("검색할 작성자를 말씀해주세요: ");
 						String writer = sc.nextLine();
@@ -102,12 +113,10 @@ public class Main {
 							System.out.println(m.getSeq()+" : "+m.getWriter()+" : "
 									+m.getMessage());
 						}
-						
 					}else {
 						System.out.println("잘못된 카테고리 입니다.");
 					}
-					
-					
+
 				}else if(key.equals("6")) {
 					System.out.println("시스템을 종료합니다.");
 					System.exit(0);

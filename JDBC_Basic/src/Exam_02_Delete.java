@@ -31,7 +31,7 @@ public class Exam_02_Delete {
 			String sql2 = "delete from cafe_menu where id = ";
 			System.out.print("삭제할 ID를 입력해주세요: ");
 			int id = Integer.parseInt(sc.nextLine());
-			int result = stat.executeUpdate(sql2 + id);
+			int result = stat.executeUpdate(sql2);
 			
 			
 

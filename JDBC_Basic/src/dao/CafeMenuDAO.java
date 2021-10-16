@@ -1,10 +1,11 @@
+
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 import dto.MenuDTO;
@@ -19,52 +20,54 @@ public class CafeMenuDAO {
 		Connection con = DriverManager.getConnection(url, username, password);
 		return con;
 	}
-	
+
 	public int insert(String name, int price) throws Exception{
-		Connection con = getConnection();
-		
 		/*
 		 * Statement stat = con.createStatement(); String sql =
 		 * "insert into cafe_menu values(cafe_menu_seq.nextval," +
 		 * "'"+name+"',"+price+")";
 		 * int result = stat.executeUpdate(sql);
 		 */
-		
-		String sql = "insert into cafe_menu values(cafe_menu_seq.nextval,?,?)";
-		PreparedStatement pstat = con.prepareStatement(sql);
-		pstat.setString(1, name); // 1번 물음표에 name 값을 할당
-		pstat.setInt(2, price); // 2번 물음표에 price 값을 할당
-		
-		int result = pstat.executeUpdate();
-		
-		con.close();
-		return result;
+
+		String sql = "insert into cafe_menu values(cafe_menu_seq.nextval,?,?,default)";
+		try(Connection con = getConnection();
+				PreparedStatement pstat = con.prepareStatement(sql);){
+
+			pstat.setString(1, name); // 1번 물음표에 name 값을 할당
+			pstat.setInt(2, price); // 2번 물음표에 price 값을 할당
+
+			int result = pstat.executeUpdate();
+			return result;
+		}
+
 	}
-	
+
 	public int update(MenuDTO dto) throws Exception {
-		Connection con = getConnection();
+
 		/*
 		 * Statement stat = con.createStatement();
 		 * 
 		 * String sql = "update cafe_menu set price = "+dto.getPrice()+", " +
-		 * "name = '"+dto.getName()+"' where id = '"+dto.getId()+"'"; 
-		 * int result = stat.executeUpdate(sql);
+		 * "name = '"+dto.getName()+"' where id = '"+dto.getId()+"'"; int result =
+		 * stat.executeUpdate(sql);
 		 * 
 		 */
-		
-		String sql = "update cafe_menu set price = ?, name = ? where id = ?";
-		PreparedStatement pstat = con.prepareStatement(sql);
-		pstat.setInt(1, dto.getPrice());
-		pstat.setString(2, dto.getName());
-		pstat.setInt(3, dto.getId());
-		int result = pstat.executeUpdate();
-		
-		con.close();
-		return result;
+
+		String sql = "update cafe_menu set name = ?, price = ?, reg_date = ? where id = ?";
+		try(Connection con = getConnection();
+				PreparedStatement pstat = con.prepareStatement(sql);){
+			pstat.setString(1, dto.getName());
+			pstat.setInt(2, dto.getPrice());
+			pstat.setDate(3, dto.getReg_date());
+			pstat.setInt(4, dto.getId());
+			int result = pstat.executeUpdate();
+
+			return result;
+		}
 	}
-	
+
 	public int delete(int id) throws Exception {
-		Connection con = getConnection();
+
 		/*
 		 * Statement stat = con.createStatement();
 		 * 
@@ -73,36 +76,37 @@ public class CafeMenuDAO {
 		 */
 
 		String sql = "delete from cafe_menu where id = ?";
-		PreparedStatement pstat = con.prepareStatement(sql);
-		pstat.setInt(0, id);
-		int result = pstat.executeUpdate();
-		
-		con.close();
-		return result;
-	}
-	
-	public ArrayList<MenuDTO> selectAll() throws Exception{
-		Connection con = getConnection(); 
-		//Statement stat = con.createStatement();
-		
-		String sql = "select * from cafe_menu order by 1";
-		
-		PreparedStatement pstat = con.prepareStatement(sql);
-		
-		ResultSet rs = pstat.executeQuery();
+		try(Connection con = getConnection();
+				PreparedStatement pstat = con.prepareStatement(sql);){
 
-		ArrayList<MenuDTO> result = new ArrayList<>();
-		
-		while(rs.next()) {
-			int id = rs.getInt("id"); 
-			String name = rs.getString("name"); 
-			int price = rs.getInt("price"); 
-			
-			MenuDTO m = new MenuDTO(id,name,price);
-			result.add(m);
+			pstat.setInt(1, id);
+			int result = pstat.executeUpdate();
+
+			return result;
 		}
-		
-		con.close();
-		return result;
+	}
+
+	public ArrayList<MenuDTO> selectAll() throws Exception{
+
+		//Statement stat = con.createStatement();
+
+		String sql = "select * from cafe_menu order by 1";
+		try(Connection con = getConnection(); 
+				PreparedStatement pstat = con.prepareStatement(sql);
+				ResultSet rs = pstat.executeQuery();){
+
+			ArrayList<MenuDTO> result = new ArrayList<>();
+			while(rs.next()) {
+				int id = rs.getInt("id"); 
+				String name = rs.getString("name"); 
+				int price = rs.getInt("price"); 
+				Date reg_date = rs.getDate("reg_date");
+
+				MenuDTO m = new MenuDTO(id,name,price,reg_date);
+				result.add(m);
+			}
+
+			return result;
+		}
 	}
 }

@@ -74,7 +74,7 @@ public class Quiz_01_copy {
 					Connection con = DriverManager.getConnection(url, username, password); 
 					Statement stat = con.createStatement();
 
-					String sql = "select * from cafe_menu order by 1";
+					String sql = "select * from cafe_menu orde1r by 1";
 					ResultSet rs = stat.executeQuery(sql);
 
 					while(rs.next()) {
