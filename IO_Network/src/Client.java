@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 public class Client {
 	public static void main(String[] args) throws Exception{
 
-		Socket Client = new Socket("127.0.0.1",22000);
+		Socket Client = new Socket("58.233.236.208",22000);
 
 		OutputStream os = Client.getOutputStream(); 
 		// 클라이언트 쪽에서 데이터를 보내겠다는 다리를 놓은 것
