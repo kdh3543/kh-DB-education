@@ -2,23 +2,20 @@ package practice;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Scanner;
 
 public class Timestamp {
 
 	public static void main(String[] args) throws Exception {
-
-		long timestamp = System.currentTimeMillis();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
-		String date = sdf.format(timestamp);
-		System.out.println(date);
+		Scanner sc = new Scanner(System.in);
+		System.out.print("날짜를 입력하세요(yyyy-MM-dd): ");
+		String input = sc.nextLine();
 		
-		String str = "2014년 8월 28일";
-		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy년 M월 dd일");
-		
-		Date d = sdf2.parse(str);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date d = sdf.parse(input);
 		System.out.println(d.getTime());
-		
-		String dateString = sdf.format(d.getTime());
-		System.out.println(dateString);
+		System.out.println("===================");
+		String a = sdf.format(d.getTime());
+		System.out.println(a);
 	}
 }

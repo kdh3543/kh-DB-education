@@ -13,12 +13,15 @@ public class Exam_05_Date {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
 		String date = sdf.format(timestamp);
 		System.out.println(date);
+		
 		// --------------------------------------------------------------------
 		
 		String str = "2008년 4월 20일";
 		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy년 M월 dd일");
 		try {
+			
 			Date d = sdf2.parse(str);
+			System.out.println(d);
 			System.out.println(d.getTime());
 			
 			String dateString2 = sdf.format(d.getTime());

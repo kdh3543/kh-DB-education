@@ -1,24 +1,37 @@
 package dao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 
-import Utils.EncryptUtils;
+import org.apache.commons.dbcp2.BasicDataSource;
+
 import dto.LoginDto;
 
 public class LoginDao {
-	public Connection getConnection() throws Exception{
-		Class.forName("oracle.jdbc.driver.OracleDriver");
-
-		String url = "jdbc:oracle:thin:@localhost:1521:xe";
-		String id = "practice";
-		String pw = "practice";
-		Connection con = DriverManager.getConnection(url,id,pw);
-		return con;
+	
+	private BasicDataSource bds = new BasicDataSource();
+	
+	private static LoginDao instance = null;
+	
+	public static LoginDao getInstance() {
+		if(instance == null) {
+			instance = new LoginDao();
+		}
+		return instance;
+	}
+	
+	private LoginDao() {
+		bds.setDriverClassName("oracle.jdbc.driver.OracleDriver");
+		bds.setUrl("jdbc:oracle:thin:@localhost:1521:xe");
+		bds.setUsername("practice");
+		bds.setPassword("practice");
+		bds.setInitialSize(30);
+	}
+	
+	public Connection getConnection() throws Exception{				
+		return bds.getConnection();
 	}
 
 	public int insert(LoginDto dto) throws Exception{

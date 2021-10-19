@@ -1,8 +1,5 @@
 package practice;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -31,8 +28,10 @@ public class Practice {
 				String menu = sc.nextLine();
 				System.out.print("메뉴의 가격을 말씀해주세요: ");
 				int price = Integer.parseInt(sc.nextLine());
-
-				int result = dao.insert(menu, price);
+				
+				CafeDto dto = new CafeDto(0,menu,price,null);
+				
+				int result = dao.insert(dto);
 				if(result > 0) {
 					System.out.println("등록 완료");
 				}else {
@@ -43,14 +42,16 @@ public class Practice {
 				ArrayList<CafeDto> dto = dao.selectAll();
 
 				for(CafeDto m : dto) {
-					System.out.println(m.getId() + " " + m.getMenu()+ " " + m.getPrice());
+					System.out.println(m.getId() + " " + m.getMenu()+ " " + m.getPrice()
+					+ " " + m.getReg_date());
 				}
 				
 			}else if(pick.equals("3")) {
 				ArrayList<CafeDto> dto = dao.selectAll();
 
 				for(CafeDto m : dto) {
-					System.out.println(m.getId() + " " + m.getMenu()+ " " + m.getPrice());
+					System.out.println(m.getId() + " " + m.getMenu()+ " " + m.getPrice()
+					+ " " + m.getReg_date());
 				}
 
 				System.out.print("수정하실 메뉴의 id를 말씀해주세요: ");
@@ -61,7 +62,7 @@ public class Practice {
 				System.out.print("메뉴의 새 가격을 말씀해주세요:");
 				int price = Integer.parseInt(sc.nextLine());
 				
-				CafeDto dto1 = new CafeDto(id,menu,price);
+				CafeDto dto1 = new CafeDto(id,menu,price,null);
 				
 				int result = dao.update(dto1);
 				
@@ -74,7 +75,8 @@ public class Practice {
 				ArrayList<CafeDto> dto = dao.selectAll();
 
 				for(CafeDto m : dto) {
-					System.out.println(m.getId() + " " + m.getMenu()+ " " + m.getPrice());
+					System.out.println(m.getId() + " " + m.getMenu()+ " " + m.getPrice()
+					+ " " + m.getReg_date());
 				}
 				
 				System.out.print("삭제하실 메뉴의 id를 말씀해주세요: ");
@@ -92,7 +94,8 @@ public class Practice {
 				ArrayList<CafeDto> dto = dao.selectAll();
 
 				for(CafeDto m : dto) {
-					System.out.println(m.getId() + " " + m.getMenu()+ " " + m.getPrice());
+					System.out.println(m.getId() + " " + m.getMenu()+ " " + m.getPrice() 
+					+ " " + m.getReg_date());
 				}
 				
 				System.out.print("검색하실 카테고리를 말씀해주세요(id/menu): ");
@@ -103,14 +106,16 @@ public class Practice {
 					int id = Integer.parseInt(sc.nextLine());
 					CafeDto result = dao.selectById(id);
 					
-					System.out.println(result.getId() + " " + result.getMenu() + " " + result.getPrice());
+					System.out.println(result.getId() + " " + result.getMenu() + " " + result.getPrice()
+					+ " " + result.getReg_date());
 				}else if(search.equals("menu")) {
 					System.out.print("검색하실 메뉴명을 말씀해주세요: ");
 					String menu = sc.nextLine();
 					ArrayList<CafeDto> result = dao.selectByMenu(menu);
 					
 					for(CafeDto m : result) {
-						System.out.println(m.getId() + " " + m.getMenu()+ " " + m.getPrice());
+						System.out.println(m.getId() + " " + m.getMenu()+ " " + m.getPrice()
+						+ " " + m.getReg_date());
 					}
 				}else{
 					System.out.println("선택하신 카테고리는 존재하지 않습니다.");

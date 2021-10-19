@@ -1,10 +1,10 @@
 package main;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Scanner;
 
+import Utils.DateUtils;
 import dao.MessageDAO;
 import dto.MessageDTO;
 
@@ -12,7 +12,7 @@ public class Main {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		//Messages Project - 방명록 시스템
-		MessageDAO dao = new MessageDAO();
+		MessageDAO dao = MessageDAO.getInstance();
 			
 		while(true) {
 			System.out.println("=== 방명록 시스템 ===");

@@ -2,23 +2,46 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
+
+import org.apache.commons.dbcp2.BasicDataSource;
 
 import dto.MessageDTO;
 
 public class MessageDAO {
 
+//	private Connection getConnection() throws Exception{
+//		Class.forName("oracle.jdbc.driver.OracleDriver");
+//		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+//		String username = "practice";
+//		String password = "practice";
+//		Connection con = DriverManager.getConnection(url, username, password);
+//		return con;
+//	}
+	private BasicDataSource bds = new BasicDataSource(); // Connection pool
+	
+	private static MessageDAO instance = null;
+	
+	public static MessageDAO getInstance() {
+		
+		if(instance == null) {
+			instance = new MessageDAO();
+		}
+		return instance;
+	}
+	
+	private MessageDAO() {
+		bds.setDriverClassName("oracle.jdbc.driver.OracleDriver");
+		bds.setUrl("jdbc:oracle:thin:@localhost:1521:xe");
+		bds.setUsername("practice");
+		bds.setPassword("practice");
+		bds.setInitialSize(30); // 기본적인 Connection pool size
+	}
+	
 	private Connection getConnection() throws Exception{
-		Class.forName("oracle.jdbc.driver.OracleDriver");
-		String url = "jdbc:oracle:thin:@localhost:1521:xe";
-		String username = "practice";
-		String password = "practice";
-		Connection con = DriverManager.getConnection(url, username, password);
-		return con;
+		return bds.getConnection();
 	}
 
 	public int insert(MessageDTO dto) throws Exception{

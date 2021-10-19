@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,15 +23,15 @@ public class CafeDao {
 
 	}
 
-	public int insert(String menu, int price) throws Exception{
+	public int insert(CafeDto dto) throws Exception{
 
-		String sql = "insert into cafe values(cafe_seq.nextval,?,?)";
+		String sql = "insert into cafe values(cafe_seq.nextval,?,?, sysdate)";
 
 		try(Connection con = getConnection();
 				PreparedStatement pstat = con.prepareStatement(sql);){
-			pstat.setString(1, menu);
-			pstat.setInt(2, price);
-
+			pstat.setString(1, dto.getMenu());
+			pstat.setInt(2, dto.getPrice());
+		
 			int result = pstat.executeUpdate();
 
 			return result;
@@ -75,8 +76,9 @@ public class CafeDao {
 				int id = rs.getInt("id");
 				String menu = rs.getString("menu");
 				int price = rs.getInt("price");
+				Date reg_date = rs.getDate("reg_date");
 
-				CafeDto dto = new CafeDto(id,menu,price);
+				CafeDto dto = new CafeDto(id,menu,price,reg_date);
 				result.add(dto);
 			}
 
@@ -97,8 +99,9 @@ public class CafeDao {
 					int id = rs.getInt("id");
 					String menu = rs.getString("menu");
 					int price = rs.getInt("price");
+					Date reg_date = rs.getDate("reg_date");
 
-					dto = new CafeDto(id, menu, price);
+					dto = new CafeDto(id,menu,price,reg_date);
 
 				}
 				return dto;
@@ -118,8 +121,9 @@ public class CafeDao {
 					int id = rs.getInt("id");
 					String menu = rs.getString("menu");
 					int price = rs.getInt("price");
-
-					result.add(new CafeDto(id, menu, price));
+					Date reg_date = rs.getDate("reg_date");
+					
+					result.add(new CafeDto(id, menu, price, reg_date));
 				}
 
 				return result;
