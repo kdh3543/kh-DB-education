@@ -94,6 +94,8 @@ public class Server {
 					dos.flush();
 				}
 			}
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 }

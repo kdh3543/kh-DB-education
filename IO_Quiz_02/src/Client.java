@@ -148,6 +148,8 @@ public class Client {
 					System.out.println("메뉴를 다시 확인해주세요.");
 				}
 			}
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 }
